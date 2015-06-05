@@ -1,0 +1,202 @@
+/*
+Copyright (C) 2015 Alexander Sadakov <al.sadakov_dog_gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+*/
+
+
+
+//
+//TST-LED - PUSH-PULL
+//
+#define TST_LED_PORT GPIOD
+#define TST_LED_PIN GPIO_PIN_3
+#define TST_LED_ON TST_LED_PORT->ODR |= TST_LED_PIN
+#define TST_LED_OFF TST_LED_PORT->ODR &= ~TST_LED_PIN
+
+
+//
+//SWITCH PIN - INPUT || EXTI FALL
+//
+#define SWITCH_PORT GPIOA
+//#define SWITCH_PIN GPIO_PIN_1
+#define SWITCH_PIN GPIO_PIN_2
+#define SWITCH_EXTI_FALL 0b00000010	//zero-detect-port exti sensitivity (write to CR1)
+#define SWITCH_EXTI_RISE 0b00000001
+
+#define ENABLE_SWITCH_EXTI_FALL EXTI->CR1 |= SWITCH_EXTI_FALL
+#define DISABLE_SWITCH_EXTI_FALL EXTI->CR1 &= ~SWITCH_EXTI_FALL
+
+#define ENABLE_SWITCH_EXTI_RISE EXTI->CR1 |= SWITCH_EXTI_RISE
+#define DISABLE_SWITCH_EXTI_RISE EXTI->CR1 &= ~SWITCH_EXTI_RISE
+
+//
+//PWR_CTL
+//
+#define PWR_CTL_PORT GPIOB
+#define PWR_CTL_PIN GPIO_PIN_4
+#define PWR_ON PWR_CTL_PORT->ODR &= ~PWR_CTL_PIN
+#define PWR_OFF PWR_CTL_PORT->ODR |= PWR_CTL_PIN
+
+//
+//LED_PWR && LED_STATE
+//
+#define LED_PORT GPIOD
+#define LED_PWR_PIN GPIO_PIN_4
+#define LED_STATE_PIN GPIO_PIN_6
+
+#define LED_PWR_ON LED_PORT->ODR |= LED_PWR_PIN
+#define LED_PWR_OFF LED_PORT->ODR &= ~LED_PWR_PIN
+#define LED_STATE_ON LED_PORT->ODR |= LED_STATE_PIN
+#define LED_STATE_OFF LED_PORT->ODR &= ~LED_STATE_PIN
+
+
+//
+//SIGNAL IN (from mic)
+//
+//#define SIG_IN_PORT GPIOD
+//#define SIG_IN_PIN GPIO_PIN_3
+#define SIG_IN_ADC_CHANNEL ADC1_CHANNEL_4
+
+
+//
+//BATTERY MEASURE IN
+//
+//#define VCC_IN_ADC_CHANNEL ADC1_CHANNEL_3
+#define VCC_IN_ADC_CHANNEL ADC1_CHANNEL_12
+
+
+//
+//CC1101
+//
+
+//GPIO
+#define CC1101_SPI_PORT GPIOC
+
+#define CC1101_CS_PIN GPIO_PIN_4
+#define CC1101_SI_PIN GPIO_PIN_6
+#define CC1101_SO_PIN GPIO_PIN_7
+#define CC1101_SCK_PIN GPIO_PIN_5
+
+#define CC1101_CS_ON CC1101_SPI_PORT->ODR &= ~CC1101_CS_PIN
+#define CC1101_CS_OFF CC1101_SPI_PORT->ODR |= CC1101_CS_PIN
+
+
+#define CC1101_GDO0_PORT GPIOC
+#define CC1101_GDO0_PIN GPIO_PIN_3
+
+#define CC1101_GDO2_PORT GPIOB
+#define CC1101_GDO2_PIN GPIO_PIN_5
+
+//#define FREQ_CORR 0x26
+#define FREQ_CORR 0x1c
+
+#define CC1101_POWER_10DBM 0xc0
+#define CC1101_POWER_5DBM 0x84
+#define CC1101_POWER_0DBM 0x60
+#define CC1101_POWER__10DBM 0x34
+#define CC1101_POWER__20DBM 0x0e
+
+
+
+//RW Rregisters
+#define CC1101_IOCFG2	0x00
+#define CC1101_IOCFG1	0x01
+#define CC1101_IOCFG0	0x02
+#define CC1101_FIFOTHR	0x03
+#define CC1101_SYNC1	0x04
+#define CC1101_SYNC0	0x05
+#define CC1101_PKTLEN	0x06
+#define CC1101_PKTCTRL1	0x07
+#define CC1101_PKTCTRL0	0x08
+#define CC1101_ADDR	0x09
+#define CC1101_CHANNR	0x0A
+#define CC1101_FSCTRL1	0x0B
+#define CC1101_FSCTRL0	0x0C
+#define CC1101_FREQ2	0x0D
+#define CC1101_FREQ1	0x0E
+#define CC1101_FREQ0	0x0F
+#define CC1101_MDMCFG4	0x10
+#define CC1101_MDMCFG3	0x11
+#define CC1101_MDMCFG2	0x12
+#define CC1101_MDMCFG1	0x13
+#define CC1101_MDMCFG0	0x14
+#define CC1101_DEVIATN	0x15
+#define CC1101_MCSM2	0x16
+#define CC1101_MCSM1	0x17
+#define CC1101_MCSM0	0x18
+#define CC1101_FOCCFG	0x19
+#define CC1101_BSCFG	0x1A
+#define CC1101_AGCCTRL2	0x1B
+#define CC1101_AGCCTRL1	0x1C
+#define CC1101_AGCCTRL0	0x1D
+#define CC1101_WOREVT1	0x1E
+#define CC1101_WOREVT0	0x1F
+#define CC1101_WORCTRL	0x20
+#define CC1101_FREND1	0x21
+#define CC1101_FREND0	0x22
+#define CC1101_FSCAL3	0x23
+#define CC1101_FSCAL2	0x24
+#define CC1101_FSCAL1	0x25
+#define CC1101_FSCAL0	0x26
+#define CC1101_RCCTRL1	0x27
+#define CC1101_RCCTRL0	0x28
+#define CC1101_FSTEST	0x29
+#define CC1101_PTEST	0x2A
+#define CC1101_AGCTEST	0x2B
+#define CC1101_TEST2	0x2C
+#define CC1101_TEST1	0x2D
+#define CC1101_TEST0	0x2E
+
+#define CC1101_PATABLE	0x3E
+
+//R registers
+#define CC1101_PARTNUM	0xB0
+#define CC1101_VERSION	0xB1
+#define CC1101_FREQEST	0xB2
+#define CC1101_LQI	0xB3
+#define CC1101_RSSI	0xB4
+#define CC1101_MARCSTATE	0xB5
+#define CC1101_WORTIME1		0xB6
+#define CC1101_WORTIME0		0xB7
+#define CC1101_PKTSTATUS	0xB8
+#define CC1101_VCO_VC_DAC	0xB9
+#define CC1101_TXBYTES		0xBA
+#define CC1101_RXBYTES		0xBB
+#define CC1101_RCCTRL1_STATUS	0xBC
+#define CC1101_RCCTRL0_STATUS	0xBD
+
+//Strobes (RW)
+#define CC1101_SRES	0x30
+#define CC1101_SFSTXON	0x31
+#define CC1101_SXOFF	0x32
+#define CC1101_SCAL	0x33
+#define CC1101_SRX	0x34
+#define CC1101_STX	0x35
+#define CC1101_SIDLE	0x36
+#define CC1101_SWOR	0x38
+#define CC1101_SPWD	0x39
+#define CC1101_SFRX	0x3A
+#define CC1101_SFTX	0x3B
+#define CC1101_SWORRST	0x3C
+#define CC1101_SNOP	0x3D
+
+
+#define CC1101_RXTX_FIFO	0x3F
+
+
+
+
+void HW_Init(void);
+void CC1101_Config(void);
+
+uint8_t CC1101_SPITransfer(uint8_t addr, uint8_t data);
+
